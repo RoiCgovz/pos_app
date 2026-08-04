@@ -2,14 +2,14 @@ const featuredProducts = [
   {
     id: 1,
     name: "Gaming Laptop",
-    price: 45000,
+    price: "54,000",
     image:
       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
   },
   {
     id: 2,
     name: "Smart Watch",
-    price: 2999,
+    price: "4,000",
     image:
       "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
   },
