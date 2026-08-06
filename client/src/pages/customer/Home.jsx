@@ -1,8 +1,24 @@
 import { Link } from "react-router-dom";
 import categories from "../../data/categories";
 import featuredProducts from "../../data/featuredProducts";
+import { useState } from "react";
 
 function Home() {
+  const [index, setIndex] = useState(0);
+
+  const next = () => {
+    setIndex((prev) => (prev + 1) % categories.length);
+  };
+
+  const prev = () => {
+    setIndex((prev) =>
+      prev === 0 ? categories.length - 1 : prev - 1
+    );
+  };
+
+  const current = categories[index];
+
+
   return (
     <div className="min-h-screen bg-gray-50">
 
@@ -19,13 +35,13 @@ function Home() {
             {/* Center */}
             <div className="flex flex-1 justify-center gap-15 text-md">
                 <Link to="/" 
-                      className="px-4 py-2 rounded-[100px] text-black hover:text-white hover:bg-black transition"> Home</Link> 
+                      className="px-4 py-2 rounded-[100px] text-black hover:text-white hover:bg-black transition duration-700"> Home</Link> 
 
                 <Link to="/products" 
-                      className="px-4 py-2 rounded-[100px] text-black hover:text-white hover:bg-black transition">Products</Link>
+                      className="px-4 py-2 rounded-[100px] text-black hover:text-white hover:bg-black transition duration-700 ">Products</Link>
 
                 <Link to="/cart" 
-                      className="px-4 py-2 rounded-[100px] text-black hover:text-white hover:bg-black transition">Cart</Link>
+                      className="px-4 py-2 rounded-[100px] text-black hover:text-white hover:bg-black transition duration-700">Cart</Link>
             </div>
 
             <div className="flex-1"></div>
@@ -58,7 +74,7 @@ function Home() {
 
           <Link
             to="/products"
-            className="bg-white text-black px-6 py-3 rounded-[100px] font-semibold hover:bg-black hover:text-white transition "
+            className="bg-white text-black px-6 py-3 rounded-[100px] font-semibold hover:bg-black hover:text-white transition duration-400 "
           >
             Shop Now
           </Link>
@@ -69,34 +85,73 @@ function Home() {
       <div className="h-[10px] bg-black/75 w-full"></div>
 
       {/* Categories */}
-      <section className="max-w-7xl mx-auto px-6 py-12 bg-black/80">
-        <h2 className="text-3xl font-bold mb-6 text-white">
-          Product Categories
-        </h2>
+      <section className="relative max-w-7xl h-150 mx-auto px-6 py-12 bg-black/80 text-white">
+        <h1 className="text-4xl font-bold mb-8 text-left ml-16">
+          Products
+        </h1>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {categories.map((category) => (
-            <div key={category.name} className="bg-white rounded-xl shadow-lg shadow-black/60 hover:bg-black transition hover:text-white transition">
-              <img
-                src={category.image}
-                className="w-full h-48 object-cover"
-              />
-              <h3 className="text-xl font-semibold p-4 text-center hover:text-white transition">
-                {category.name}
-              </h3>
-            </div>
-          ))}
+        {/* Buttons */}
+        <button
+          onClick={prev}
+          className="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-100 text-white ml-2 grid place-items-center hover:bg-black/70 transition duration-600"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+
+        <button
+          onClick={next}
+          className="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-100 text-white ml-2 grid place-items-center hover:bg-black/70 transition duration-600"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+
+        {/* CONTENT */}
+        <div className="flex flex-col md:flex-row items-center gap-10 px-20 ">
+
+          {/* LEFT TEXT */}
+          <div className="flex-1">
+            <h3 className="text-[90px] font-bold mb-4 mt-5">
+              {categories[index].name}
+            </h3>
+
+            <p className="text-gray-300 ml-1 text-[20px]">
+              Explore our {categories[index].name} collection.
+            </p>
+          </div>
+
+          {/* RIGHT IMAGE */}
+          <div className="flex-1 flex justify-center md:justify-end mr-5">
+            <img
+              src={categories[index].image}
+              alt={categories[index].name}
+              className="w-[400px] h-[400px] object-cover rounded-xl shadow-lg"
+            />
+          </div>
+
         </div>
       </section>
       
       <div className="h-[10px] bg-black/75 w-full"></div>
 
+      {/* Featured Products */}
       <section className="max-w-7xl mx-auto px-6 py-12 bg-black/80">
         <h2 className="text-3xl text-white font-bold mb-8">
           Featured Products
         </h2>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="flex gap-10 overflow-x-auto snap-x snap-mandatory">
           {featuredProducts.map((product) => (
             <div
               key={product.id}
