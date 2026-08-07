@@ -5,97 +5,98 @@ import { useState } from "react";
 
 function Home() {
   const [index, setIndex] = useState(0);
-
-  const next = () => {
-    setIndex((prev) => (prev + 1) % categories.length);
+  const next = () => { setIndex((prev) => (prev + 1) % categories.length);
   };
-
-  const prev = () => {
-    setIndex((prev) =>
-      prev === 0 ? categories.length - 1 : prev - 1
-    );
+  const prev = () => { setIndex((prev) => prev === 0 ? categories.length - 1 : prev - 1);
   };
-
-  const current = categories[index];
-
 
   return (
-    <div className="min-h-screen bg-gray-50">
-
+    <>
       {/* Navbar */}
-     <nav className="bg-white shadow-md">
+      <nav className="bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center">
-            {/* Left */}
-            <div className="flex-1">
-                <h1 className="text-md font-semibold text-gray-800">
-                    BuySphere
-                </h1>
-            </div>
+          <div className="flex-1">
+            <Link to="/" className="text-md font-bold text-gray-800">
+              BuySphere
+            </Link>
+          </div>
 
-            {/* Center */}
-            <div className="flex flex-1 justify-center gap-15 text-md">
-                <Link to="/" 
-                      className="px-4 py-2 rounded-[100px] text-black hover:text-white hover:bg-black transition duration-700"> Home</Link> 
+          <div className="flex flex-1 justify-center gap-15 text-md">
+            <Link to="/" className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500">
+              Home
+            </Link>
+            <Link to="/products" className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500">
+              Products
+            </Link>
+            <Link to="/cart" className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500">
+              Cart
+            </Link>
+          </div>
 
-                <Link to="/products" 
-                      className="px-4 py-2 rounded-[100px] text-black hover:text-white hover:bg-black transition duration-700 ">Products</Link>
-
-                <Link to="/cart" 
-                      className="px-4 py-2 rounded-[100px] text-black hover:text-white hover:bg-black transition duration-700">Cart</Link>
-            </div>
-
-            <div className="flex-1"></div>
-
+          <div className="flex-1" />
         </div>
-     </nav>
+      </nav>
 
       {/* Promotional Product */}
-      <section className="relative h-150 overflow-hidden text-white text-center">
+      <section className="relative h-[550px] overflow-hidden text-white">
+        <img src="https://images.unsplash.com/photo-1562105962-2fbaaf107fe3?q=80&w=2048&auto=format&fit=crop" alt="Featured shoe" className="absolute inset-0 w-full h-full object-cover opacity-60"/>
 
-        {/* Background Image */}
-        <img
-          src="https://images.unsplash.com/photo-1562105962-2fbaaf107fe3?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="shoe"
-          className="absolute top-1/2 left-1/2 w-500 h-300 object-cover opacity-70 transform -translate-x-1/2 -translate-y-1/2 " 
-        />
+        <div className="absolute inset-0 bg-black/70" />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/80"></div>
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+          <p className="text-sm tracking-[5px] uppercase text-gray-300 mb-4">
+            BuySphere Collection
+          </p>
 
-        {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-10 py-32 min-h-screen">
-          <h2 className="text-5xl font-bold mb-5">
+          <h2 className="text-5xl md:text-6xl font-bold mb-5">
             Big Sale Up To 50% Off
           </h2>
 
-          <p className="text-lg mb-8">
+          <p className="text-lg text-gray-300 mb-8 max-w-xl">
             Discover the latest products at the best prices.
           </p>
 
           <Link
             to="/products"
-            className="bg-white text-black px-6 py-3 rounded-[100px] font-semibold hover:bg-black hover:text-white transition duration-400 "
+            className="bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-black hover:text-white border border-white transition duration-300"
           >
             Shop Now
           </Link>
         </div>
-
       </section>
 
-      <div className="h-[10px] bg-black/75 w-full"></div>
+      <div className="h-2 bg-black/80" />
 
       {/* Categories */}
-      <section className="relative max-w-7xl h-150 mx-auto px-6 py-12 bg-black/80 text-white">
-        <h1 className="text-4xl font-bold mb-8 text-left ml-16">
-          Products
-        </h1>
+      <section className="relative max-w-7xl h-[550px] mx-auto px-6 py-12 bg-black text-white overflow-hidden">
+        <div className="flex items-center justify-between px-10">
+          <div>
+            <p className="text-xs tracking-[4px] uppercase text-gray-400">
+              Explore
+            </p>
+            <h2 className="text-4xl font-bold mt-2">
+              Products
+            </h2>
+          </div>
 
-        {/* Buttons */}
+          <div className="text-sm text-gray-400">
+            {index + 1} / {categories.length}
+          </div>
+        </div>
+
+        {/* Previous */}
         <button
           onClick={prev}
-          className="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-100 text-white ml-2 grid place-items-center hover:bg-black/70 transition duration-600"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-24 grid place-items-center text-white hover:bg-white/10 rounded-full transition"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-8 h-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -104,11 +105,19 @@ function Home() {
           </svg>
         </button>
 
+        {/* Next */}
         <button
           onClick={next}
-          className="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-100 text-white ml-2 grid place-items-center hover:bg-black/70 transition duration-600"
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-24 grid place-items-center text-white hover:bg-white/10 rounded-full transition"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-8 h-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -117,65 +126,92 @@ function Home() {
           </svg>
         </button>
 
-        {/* CONTENT */}
-        <div className="flex flex-col md:flex-row items-center gap-10 px-20 ">
-
-          {/* LEFT TEXT */}
+        {/* Content */}
+        <div className="h-[400px] flex flex-col md:flex-row items-center gap-12 px-16">
+          
+          {/* Text */}
           <div className="flex-1">
-            <h3 className="text-[90px] font-bold mb-4 mt-5">
+            <p className="text-sm text-gray-400 uppercase tracking-widest mb-3">
+              Collection
+            </p>
+
+            <h3 className="text-6xl md:text-7xl font-bold mb-5">
               {categories[index].name}
             </h3>
 
-            <p className="text-gray-300 ml-1 text-[20px]">
-              Explore our {categories[index].name} collection.
+            <p className="text-gray-400 text-lg max-w-md">
+              Explore our {categories[index].name} collection and discover
+              products made for your style.
             </p>
+
+            <Link
+              to="/products"
+              className="inline-block mt-7 border border-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition"
+            >
+              Explore Collection
+            </Link>
           </div>
 
-          {/* RIGHT IMAGE */}
-          <div className="flex-1 flex justify-center md:justify-end mr-5">
+          {/* Image */}
+          <div className="flex-1 flex justify-center">
             <img
               src={categories[index].image}
               alt={categories[index].name}
-              className="w-[400px] h-[400px] object-cover rounded-xl shadow-lg"
+              className="w-[360px] h-[360px] object-cover rounded-2xl shadow-2xl hover:scale-105 transition duration-500"
             />
           </div>
-
         </div>
       </section>
-      
-      <div className="h-[10px] bg-black/75 w-full"></div>
+
+      <div className="h-2 bg-black/80" />
 
       {/* Featured Products */}
-      <section className="max-w-7xl mx-auto px-6 py-12 bg-black/80">
-        <h2 className="text-3xl text-white font-bold mb-8">
-          Featured Products
-        </h2>
+      <section className="max-w-7xl mx-auto px-6 py-14 bg-black">
+        <div className="flex items-end justify-between mb-8">
+          <div>
+            <p className="text-xs tracking-[4px] uppercase text-gray-400">
+              Our Picks
+            </p>
 
-        <div className="flex gap-10 overflow-x-auto snap-x snap-mandatory">
+            <h2 className="text-4xl text-white font-bold mt-2">
+              Featured Products
+            </h2>
+          </div>
+
+          <Link
+            to="/products"
+            className="hidden md:block text-sm text-gray-400 hover:text-white transition"
+          >
+            View All →
+          </Link>
+        </div>
+
+        <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-4">
           {featuredProducts.map((product) => (
             <div
               key={product.id}
-              className="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
+              className="min-w-[280px] md:min-w-[300px] bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden snap-start"
             >
-              <img
-                src={product.image}
-                className="h-52 w-full object-cover"
-              />
+              <div className="h-52 bg-gray-100 overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-full w-full object-cover hover:scale-105 transition duration-500"
+                />
+              </div>
 
-              {/* Content */}
-              <div className="p-4 flex flex-col">
-                <h3 className="text-xl font-bold mb-2 ">
+              <div className="p-5">
+                <h3 className="text-lg font-bold mb-2">
                   {product.name}
                 </h3>
 
-                <p className="text-black/70 text-[15px] font-semibold mb-4">
-                  ₱{product.price}
+                <p className="text-black/60 text-sm font-semibold mb-5">
+                  ${product.price}
                 </p>
 
                 <Link
                   to={`/product`}
-                  className="border w-50 mx-auto mt-auto text-center px-4 py-2 bg-white text-black rounded-lg font-semibold 
-                  hover:bg-black hover:text-white transition duration-300"
+                  className="block w-full text-center border border-black px-4 py-2 rounded-lg bg-black text-white font-semibold hover:bg-white hover:text-black transition duration-300"
                 >
                   View Product
                 </Link>
@@ -185,17 +221,27 @@ function Home() {
         </div>
       </section>
 
-      <div className="h-[10px] bg-black/75 w-full"></div>
+      <div className="h-2 bg-black/80" />
 
       {/* Footer */}
-      <footer className="bg-black/80 text-white py-8 text-center">
-        <h2 className="text-xl font-bold mb-2">BuySphere</h2>
-        <p className="text-gray-300 mb-2">support@buysphere.com</p>
-        <p className="text-gray-300 mb-2">facebook.com/BuySphere</p>
-        <p className="text-gray-300 mb-2">0918972980</p>
-      </footer>
+      <footer className="bg-black text-white py-10 text-center">
+        <h2 className="text-xl font-bold mb-3">
+          BuySphere
+        </h2>
 
-    </div>
+        <p className="text-gray-400 text-sm mb-1">
+          support@buysphere.com
+        </p>
+
+        <p className="text-gray-400 text-sm mb-1">
+          facebook.com/BuySphere
+        </p>
+
+        <p className="text-gray-400 text-sm">
+          0918972980
+        </p>
+      </footer>
+    </>
   );
 }
 
