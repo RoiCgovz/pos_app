@@ -29,31 +29,34 @@ BuySphere is an e-commerce web application that allows users to browse products,
 
 ## ⚙️ Setup Instructions
 
-1. Clone the repository:
+1. Clone the repository or go to the website:
 
    ```bash
-   git clone <your-repo-link>
+   git clone https://github.com/RoiCgovz/pos_app
    ```
 
-2. Navigate to the project folder:
+   ## Website Link
+   https://buysphereproject.vercel.app/
+
+3. Navigate to the project folder:
 
    ```bash
    cd your-project-folder
    ```
 
-3. Install dependencies:
+4. Install dependencies:
 
    ```bash
    npm install
    ```
 
-4. Run the development server:
+5. Run the development server:
 
    ```bash
    npm run dev
    ```
 
-5. Open in browser:
+6. Open in browser:
 
    ```
    http://localhost:5173
