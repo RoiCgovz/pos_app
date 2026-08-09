@@ -299,9 +299,12 @@ function AdminProductManagement({ setIsAdmin }) {
             name="category"
             value={form.category}
             onChange={handleChange}
-            className="input"
+            className="input text-white bg-black"
           >
-            <option value="">
+            <option
+              value=""
+              className="text-white bg-black"
+            >
               Select Category
             </option>
 
@@ -309,6 +312,7 @@ function AdminProductManagement({ setIsAdmin }) {
               <option
                 key={c.id}
                 value={c.name}
+                className="text-white bg-black"
               >
                 {c.name}
               </option>
