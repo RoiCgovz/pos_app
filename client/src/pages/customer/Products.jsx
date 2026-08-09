@@ -22,7 +22,6 @@ function Products({ setCart }) {
     () => localStorage.getItem("brand") || "All"
   );
 
-  // Load products from localStorage
   useEffect(() => {
     const loadProducts = () => {
       try {
@@ -31,21 +30,15 @@ function Products({ setCart }) {
         if (saved) {
           setProducts(JSON.parse(saved));
         } else {
-          localStorage.setItem(
-            "products",
-            JSON.stringify(sampleProducts)
-          );
-
+          localStorage.setItem("products", JSON.stringify(sampleProducts));
           setProducts(sampleProducts);
         }
-      } catch (error) {
-        console.error("Error loading products:", error);
+      } catch {
         setProducts(sampleProducts);
       }
     };
 
     loadProducts();
-
     window.addEventListener("storage", loadProducts);
     window.addEventListener("focus", loadProducts);
 
@@ -55,7 +48,6 @@ function Products({ setCart }) {
     };
   }, []);
 
- 
   useEffect(() => {
     localStorage.setItem("search", search);
     localStorage.setItem("selectedCategory", category);
@@ -63,146 +55,111 @@ function Products({ setCart }) {
     localStorage.setItem("brand", brand);
   }, [search, category, sort, brand]);
 
-  const brands = [
-    "All",
-    ...new Set(products.map(p => p.brand))
-  ];
-
-  const categories = [
-    "All",
-    ...new Set(products.map(p => p.category))
-  ];
+  const brands = ["All", ...new Set(products.map(p => p.brand))];
+  const categories = ["All", ...new Set(products.map(p => p.category))];
 
   let filteredProducts = products
     .filter(p => p.active !== false)
     .filter(
       p =>
         (
-          p.brand
-            .toLowerCase()
-            .includes(search.toLowerCase()) ||
-          p.name
-            .toLowerCase()
-            .includes(search.toLowerCase())
+          p.brand.toLowerCase().includes(search.toLowerCase()) ||
+          p.name.toLowerCase().includes(search.toLowerCase())
         ) &&
         (category === "All" || p.category === category) &&
         (brand === "All" || p.brand === brand)
     );
 
-  if (sort === "low") {
-    filteredProducts.sort((a, b) => a.price - b.price);
-  }
-
-  if (sort === "high") {
-    filteredProducts.sort((a, b) => b.price - a.price);
-  }
+  if (sort === "low") filteredProducts.sort((a, b) => a.price - b.price);
+  if (sort === "high") filteredProducts.sort((a, b) => b.price - a.price);
 
   return (
-    <>
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center">
-          <div className="flex-1">
-            <Link
-              to="/"
-              className="text-md font-semibold text-gray-800"
-            >
+    <div class="max-w-7xl mx-auto">
+      {/* Navbar */}
+      <nav className="bg-white shadow-md max-w">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-3">
+          <div className="w-full md:flex-1 text-center md:text-left">
+            <Link to="/" className="text-lg font-bold text-gray-800">
               BuySphere
             </Link>
           </div>
 
-          <div className="flex flex-1 justify-center gap-15 text-md">
-            <Link
-              to="/"
-              className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500"
-            >
-              Home
-            </Link>
-
-            <Link
-              to="/products"
-              className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500"
-            >
-              Products
-            </Link>
-
-            <Link
-              to="/cart"
-              className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500"
-            >
-              Cart
-            </Link>
+          <div className="w-full flex justify-center">
+            <div className="flex gap-4 text-sm">
+              <Link to="/" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">
+                Home
+              </Link>
+              <Link to="/products" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">
+                Products
+              </Link>
+              <Link to="/cart" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">
+                Cart
+              </Link>
+            </div>
           </div>
-
-          <div className="flex-1" />
         </div>
       </nav>
 
+      {/* Page */}
       <div className="min-h-screen bg-black text-white">
-        <div className="h-28 flex items-center justify-end border-b border-white/20">
+
+        {/* Search */}
+        <div className="p-4 border-b border-white/20">
           <input
             type="text"
             placeholder="Search..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-100 h-10 mr-10 pl-4 pr-10 text-black text-md rounded-full outline-none bg-white focus:ring-2 focus:ring-gray-400"
+            className="w-full md:w-[350px] h-10 px-4 text-black rounded-full outline-none"
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 max-w-7xl mx-auto">
-          <aside className="border-r border-white/20">
-            <div className="p-7 border-b border-white/20">
-              <h2 className="text-xs text-gray-400 font-bold mb-3 tracking-widest">
-                SORT
-              </h2>
+        {/* Filters (mobile top, desktop sidebar) */}
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4">
 
+          {/* Filters */}
+          <aside className="p-4 md:border-r border-white/20 flex flex-col gap-4 md:gap-6">
+
+            <div>
+              <h2 className="text-xs text-gray-400 mb-2">SORT</h2>
               <select
                 value={sort}
                 onChange={e => setSort(e.target.value)}
-                className="w-full h-9 px-3 bg-black text-white text-sm border border-white/30 rounded outline-none hover:border-white transition"
+                className="w-full h-9 px-3 bg-black border border-white/30 rounded"
               >
-                <option value="default">
-                  What's new
-                </option>
-
-                <option value="low">
-                  Price: Low to High
-                </option>
-
-                <option value="high">
-                  Price: High to Low
-                </option>
+                <option value="default">What's new</option>
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
               </select>
             </div>
 
-            <div className="p-7">
-              <h2 className="text-xs text-gray-400 font-bold mb-4 tracking-widest">
-                FILTER
-              </h2>
-
+            <div>
+              <h2 className="text-xs text-gray-400 mb-2">CATEGORY</h2>
               <select
                 value={category}
                 onChange={e => setCategory(e.target.value)}
-                className="w-full h-9 mb-3 px-3 bg-black text-white border border-white/30 rounded outline-none hover:border-white transition"
+                className="w-full h-9 px-3 bg-black border border-white/30 rounded"
               >
-                {categories.map(c => (
-                  <option key={c}>{c}</option>
-                ))}
+                {categories.map(c => <option key={c}>{c}</option>)}
               </select>
+            </div>
 
+            <div>
+              <h2 className="text-xs text-gray-400 mb-2">BRAND</h2>
               <select
                 value={brand}
                 onChange={e => setBrand(e.target.value)}
-                className="w-full h-9 px-3 bg-black text-white border border-white/30 rounded outline-none hover:border-white transition"
+                className="w-full h-9 px-3 bg-black border border-white/30 rounded"
               >
-                {brands.map(b => (
-                  <option key={b}>{b}</option>
-                ))}
+                {brands.map(b => <option key={b}>{b}</option>)}
               </select>
             </div>
+
           </aside>
 
-          <main className="col-span-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Products */}
+          <main className="col-span-3 p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredProducts.map(product => (
                 <ProductCard
                   key={product.id}
@@ -220,60 +177,40 @@ function Products({ setCart }) {
           </main>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
+/* Product Card */
 function ProductCard({ product, setCart }) {
   const inStock = product.stock > 0;
 
   const addToCart = () => {
     if (!inStock) return;
 
-    setCart(prevCart => {
-      const existing = prevCart.find(
-        item => item.id === product.id
-      );
+    setCart(prev => {
+      const existing = prev.find(i => i.id === product.id);
 
-      let updatedCart;
+      let updated;
 
       if (existing) {
-        updatedCart = prevCart.map(item =>
-          item.id === product.id
-            ? {
-                ...item,
-                ...product,
-                quantity: Math.min(
-                  item.quantity + 1,
-                  product.stock
-                )
-              }
-            : item
+        updated = prev.map(i =>
+          i.id === product.id
+            ? { ...i, quantity: Math.min(i.quantity + 1, product.stock) }
+            : i
         );
       } else {
-        updatedCart = [
-          ...prevCart,
-          {
-            ...product,
-            quantity: 1
-          }
-        ];
+        updated = [...prev, { ...product, quantity: 1 }];
       }
 
-      localStorage.setItem(
-        "cart",
-        JSON.stringify(updatedCart)
-      );
-
-      return updatedCart;
+      localStorage.setItem("cart", JSON.stringify(updated));
+      return updated;
     });
 
-    toast.success(
-      `${product.name} added to cart`
-    );
+    toast.success(`${product.name} added`);
   };
 
-   return (
+  return (
     <div className="relative border border-white/20 p-5">
       {product.new && <span className="absolute top-6 right-5 text-[9px] font-bold text-gray-400">NEW</span>}
       <div>
