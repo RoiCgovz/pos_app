@@ -86,11 +86,7 @@ function Checkout({ cart, setCart }) {
           <Link to="/cart" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Cart</Link>
         </div>
 
-        <div className="w-full md:flex-1 flex justify-center md:justify-end">
-          <Link to="/admin/login" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">
-            Admin
-          </Link>
-        </div>
+        <div className="w-full md:flex-1 flex justify-center md:justify-end"/>
 
       </div>
     </nav>

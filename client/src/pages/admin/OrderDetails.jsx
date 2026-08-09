@@ -21,15 +21,15 @@ function AdminOrderDetails({ setIsAdmin }) {
     const savedOrders =
       JSON.parse(localStorage.getItem("orders")) || [];
 
-    const foundOrder = savedOrders.find(
-      (item) => item.number === orderNumber
+    const found = savedOrders.find(
+      (o) => o.number === orderNumber
     );
 
-    setOrder(foundOrder || null);
+    setOrder(found || null);
   }, [orderNumber]);
 
   const handleLogout = () => {
-    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("admin");
     setIsAdmin(false);
     navigate("/admin/login");
   };
@@ -38,479 +38,208 @@ function AdminOrderDetails({ setIsAdmin }) {
     const savedOrders =
       JSON.parse(localStorage.getItem("orders")) || [];
 
-    const updatedOrders = savedOrders.map((item) =>
-      item.number === order.number
-        ? {
-            ...item,
-            status: newStatus,
-          }
-        : item
+    const updated = savedOrders.map((o) =>
+      o.number === order.number
+        ? { ...o, status: newStatus }
+        : o
     );
 
-    localStorage.setItem(
-      "orders",
-      JSON.stringify(updatedOrders)
-    );
+    localStorage.setItem("orders", JSON.stringify(updated));
 
-    setOrder({
-      ...order,
-      status: newStatus,
-    });
+    setOrder({ ...order, status: newStatus });
 
     toast.success("Order status updated");
   };
 
   if (!order) {
     return (
-      <div className="min-h-screen bg-black text-white">
-
+      <>
         {/* NAVBAR */}
-        <nav className="bg-black text-white">
-          <div className="flex items-center px-6 py-3">
+        <nav className="bg-white shadow-md">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-3">
 
-            <div className="flex-1">
-              <Link
-                to="/"
-                className="text-md font-bold text-white"
-              >
+            <div className="w-full md:flex-1 text-center md:text-left">
+              <Link to="/" className="font-bold text-gray-800">
                 BuySphere
               </Link>
             </div>
 
-            <div className="flex flex-1 justify-center gap-15 text-md">
-
-              <Link
-                to="/admin/dashboard"
-                className="px-4 py-2 rounded-full hover:bg-white hover:text-black transition"
-              >
-                Dashboard
-              </Link>
-
-              <Link
-                to="/admin/customerManage"
-                className="px-4 py-2 rounded-full hover:bg-white hover:text-black transition"
-              >
-                Customers
-              </Link>
-
-              <Link
-                to="/admin/categoryManage"
-                className="px-4 py-2 rounded-full hover:bg-white hover:text-black transition"
-              >
-                Categories
-              </Link>
-
-              <Link
-                to="/admin/orderManage"
-                className="px-4 py-2 rounded-full bg-white text-black"
-              >
-                Orders
-              </Link>
-
-              <Link
-                to="/admin/productManage"
-                className="px-4 py-2 rounded-full hover:bg-white hover:text-black transition"
-              >
-                Products
-              </Link>
-
+            <div className="flex flex-wrap justify-center gap-2 text-xs md:text-sm">
+              <Link to="/admin/dashboard" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Dashboard</Link>
+              <Link to="/admin/customerManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Customers</Link>
+              <Link to="/admin/categoryManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Categories</Link>
+              <Link to="/admin/orderManage" className="px-3 py-1 rounded-full bg-black text-white">Orders</Link>
+              <Link to="/admin/productManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Products</Link>
             </div>
 
-            <div className="flex-1 flex justify-end">
-
+            <div className="w-full md:flex-1 flex justify-center md:justify-end">
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 rounded-full border border-black hover:bg-white hover:text-black transition"
+                className="px-3 py-1 border rounded-full hover:bg-black hover:text-white transition"
               >
                 Logout
               </button>
-
             </div>
 
           </div>
         </nav>
 
-        <div className="p-6 max-w-7xl mx-auto">
-
-          <p className="text-gray-400">
-            Order not found.
-          </p>
-
-          <button
-            onClick={() => navigate("/admin/orderManage")}
-            className="mt-5 border border-white px-4 py-2 rounded hover:bg-white hover:text-black transition"
-          >
-            Back to Orders
-          </button>
-
+        {/* NOT FOUND */}
+        <div className="min-h-screen bg-black text-white flex items-center justify-center text-center px-4">
+          <div>
+            <p className="text-gray-400">Order not found.</p>
+            <button
+              onClick={() => navigate("/admin/orderManage")}
+              className="mt-5 border border-white px-4 py-2 rounded hover:bg-white hover:text-black"
+            >
+              Back to Orders
+            </button>
+          </div>
         </div>
-
-      </div>
+      </>
     );
   }
 
-  const subtotal = order.items?.reduce(
-    (sum, item) =>
-      sum +
-      Number(item.price || 0) *
-        Number(item.quantity || 0),
-    0
-  ) || 0;
+  const subtotal =
+    order.items?.reduce(
+      (sum, item) =>
+        sum +
+        Number(item.price || 0) *
+          Number(item.quantity || 0),
+      0
+    ) || 0;
 
   return (
-    <div className="min-h-screen bg-black text-white">
-
+    <>
       {/* NAVBAR */}
+      <nav className="bg-white shadow-md">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-3">
 
-      <nav className="bg-black text-white">
-
-        <div className="flex items-center px-6 py-3">
-
-          <div className="flex-1">
-
-            <Link
-              to="/"
-              className="text-md font-bold text-white"
-            >
+          <div className="w-full md:flex-1 text-center md:text-left">
+            <Link to="/" className="font-bold text-gray-800">
               BuySphere
             </Link>
-
           </div>
 
-          <div className="flex flex-1 justify-center gap-15 text-md">
-
-            <Link
-              to="/admin/dashboard"
-              className="px-4 py-2 rounded-full hover:bg-white hover:text-black transition"
-            >
-              Dashboard
-            </Link>
-
-            <Link
-              to="/admin/customerManage"
-              className="px-4 py-2 rounded-full hover:bg-white hover:text-black transition"
-            >
-              Customers
-            </Link>
-
-            <Link
-              to="/admin/categoryManage"
-              className="px-4 py-2 rounded-full hover:bg-white hover:text-black transition"
-            >
-              Categories
-            </Link>
-
-            <Link
-              to="/admin/orderManage"
-              className="px-4 py-2 rounded-full bg-white text-black"
-            >
-              Orders
-            </Link>
-
-            <Link
-              to="/admin/productManage"
-              className="px-4 py-2 rounded-full hover:bg-white hover:text-black transition"
-            >
-              Products
-            </Link>
-
+          <div className="flex flex-wrap justify-center gap-2 text-xs md:text-sm">
+            <Link to="/admin/dashboard" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Dashboard</Link>
+            <Link to="/admin/customerManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Customers</Link>
+            <Link to="/admin/categoryManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Categories</Link>
+            <Link to="/admin/orderManage" className="px-3 py-1 rounded-full bg-black text-white">Orders</Link>
+            <Link to="/admin/productManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Products</Link>
           </div>
 
-          <div className="flex-1 flex justify-end">
-
+          <div className="w-full md:flex-1 flex justify-center md:justify-end">
             <button
               onClick={handleLogout}
-              className="px-4 py-2 rounded-full border border-white hover:bg-white hover:text-black transition"
+              className="px-3 py-1 border rounded-full hover:bg-black hover:text-white transition"
             >
               Logout
             </button>
-
           </div>
 
         </div>
-
       </nav>
 
       {/* CONTENT */}
+      <div className="min-h-screen bg-black text-white px-4 py-8">
+        <div className="max-w-7xl mx-auto">
 
-      <div className="p-6 max-w-7xl mx-auto">
+          {/* HEADER */}
+          <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
+            <div>
+              <p className="text-xs text-gray-400">ORDER DETAILS</p>
+              <h1 className="text-xl md:text-2xl font-bold">
+                {order.number}
+              </h1>
+              {order.date && (
+                <p className="text-xs text-gray-400 mt-1">
+                  {new Date(order.date).toLocaleString()}
+                </p>
+              )}
+            </div>
 
-        {/* HEADER */}
-
-        <div className="flex justify-between items-center mb-8">
-
-          <div>
-
-            <p className="text-sm text-gray-400">
-              ORDER DETAILS
-            </p>
-
-            <h1 className="text-2xl font-bold">
-              {order.number}
-            </h1>
-
-            {order.date && (
-              <p className="text-sm text-gray-400 mt-1">
-                {new Date(order.date).toLocaleString()}
-              </p>
-            )}
-
+            <button
+              onClick={() => navigate("/admin/orderManage")}
+              className="border border-white px-10 py-3 rounded hover:bg-white hover:text-black"
+            >
+              Back
+            </button>
           </div>
 
-          <button
-            onClick={() => navigate("/admin/orderManage")}
-            className="border border-white px-4 py-2 rounded hover:bg-white hover:text-black transition"
-          >
-            Back to Orders
-          </button>
+          {/* CUSTOMER */}
+          <div className="border border-white/20 p-4 rounded-lg mb-4 text-sm">
+            <h2 className="font-semibold mb-3">Customer</h2>
 
-        </div>
-
-        {/* CUSTOMER INFORMATION */}
-
-        <div className="border border-white/20 rounded-lg p-5 mb-5">
-
-          <h2 className="font-semibold text-lg mb-4">
-            Customer Information
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            <div>
-              <p className="text-sm text-gray-400">
-                Customer Name
-              </p>
-
-              <p className="mt-1">
-                {order.customer?.name || "N/A"}
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs md:text-sm">
+              <p>{order.customer?.name}</p>
+              <p>{order.customer?.email}</p>
+              <p>{order.customer?.contact || "N/A"}</p>
             </div>
-
-            <div>
-              <p className="text-sm text-gray-400">
-                Email Address
-              </p>
-
-              <p className="mt-1">
-                {order.customer?.email || "N/A"}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-400">
-                Contact Number
-              </p>
-
-              <p className="mt-1">
-                {order.customer?.contact || "N/A"}
-              </p>
-            </div>
-
           </div>
 
-        </div>
+          {/* ITEMS */}
+          <div className="border border-white/20 p-4 rounded-lg mb-4 text-sm">
+            <h2 className="font-semibold mb-3">Items</h2>
 
-        {/* DELIVERY ADDRESS */}
-
-        <div className="border border-white/20 rounded-lg p-5 mb-5">
-
-          <h2 className="font-semibold text-lg mb-4">
-            Delivery Address
-          </h2>
-
-          <p className="text-gray-300">
-            {order.customer?.address ||
-              order.address ||
-              "No delivery address provided."}
-          </p>
-
-        </div>
-
-        {/* ORDERED PRODUCTS */}
-
-        <div className="border border-white/20 rounded-lg p-5 mb-5">
-
-          <h2 className="font-semibold text-lg mb-4">
-            Ordered Products
-          </h2>
-
-          <div className="space-y-3">
-
-            {order.items?.map((item) => (
-
-              <div
-                key={item.id}
-                className="border border-white/20 rounded p-4"
-              >
-
-                <div className="flex justify-between items-center">
-
-                  <div>
-
-                    <p className="font-semibold">
-                      {item.name}
-                    </p>
-
-                    <p className="text-sm text-gray-400 mt-1">
-                      ${Number(item.price || 0).toFixed(2)}
-                      {" "}×{" "}
-                      {item.quantity}
-                    </p>
-
-                  </div>
-
-                  <div className="text-right">
-
-                    <p className="text-sm text-gray-400">
-                      Quantity
-                    </p>
-
-                    <p className="font-semibold">
-                      {item.quantity}
-                    </p>
-
-                  </div>
-
-                </div>
-
-                <div className="border-t border-white/20 mt-3 pt-3 flex justify-between">
-
-                  <span className="text-gray-400">
-                    Item Total
+            <div className="space-y-2">
+              {order.items?.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex justify-between text-xs md:text-sm"
+                >
+                  <span>
+                    {item.name} x{item.quantity}
                   </span>
-
-                  <span className="font-semibold">
+                  <span>
                     $
                     {(
-                      Number(item.price || 0) *
-                      Number(item.quantity || 0)
+                      Number(item.price) *
+                      Number(item.quantity)
                     ).toFixed(2)}
                   </span>
-
                 </div>
-
-              </div>
-
-            ))}
-
+              ))}
+            </div>
           </div>
 
-        </div>
+          {/* SUMMARY */}
+          <div className="border border-white/20 p-4 rounded-lg mb-4 text-sm">
+            <h2 className="font-semibold mb-3">Summary</h2>
 
-        {/* ORDER SUMMARY */}
-
-        <div className="border border-white/20 rounded-lg p-5 mb-5">
-
-          <h2 className="font-semibold text-lg mb-4">
-            Order Summary
-          </h2>
-
-          <div className="space-y-3">
-
-            <div className="flex justify-between">
-
-              <span className="text-gray-400">
-                Subtotal
-              </span>
-
-              <span>
-                ${subtotal.toFixed(2)}
-              </span>
-
+            <div className="flex justify-between text-xs md:text-sm">
+              <span>Subtotal</span>
+              <span>${subtotal.toFixed(2)}</span>
             </div>
 
-            <div className="border-t border-white/20 pt-3 flex justify-between">
-
-              <span className="font-semibold">
-                Total Amount
-              </span>
-
-              <span className="font-bold text-lg">
+            <div className="border-t border-white/20 mt-2 pt-2 flex justify-between font-semibold">
+              <span>Total</span>
+              <span>
                 ${Number(order.total || subtotal).toFixed(2)}
               </span>
-
             </div>
-
           </div>
 
-        </div>
-
-        {/* PAYMENT & STATUS */}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-
-          {/* PAYMENT METHOD */}
-
-          <div className="border border-white/20 rounded-lg p-5">
-
-            <h2 className="font-semibold text-lg mb-4">
-              Payment Method
-            </h2>
-
-            <p className="text-gray-300">
-              {order.customer?.payment ||
-                order.payment ||
-                order.paymentMethod ||
-                "N/A"}
-            </p>
-
-          </div>
-
-          {/* ORDER STATUS */}
-
-          <div className="border border-white/20 rounded-lg p-5">
-
-            <h2 className="font-semibold text-lg mb-4">
-              Order Status
-            </h2>
+          {/* STATUS */}
+          <div className="border border-white/20 p-4 rounded-lg text-sm">
+            <h2 className="font-semibold mb-3">Status</h2>
 
             <select
               value={order.status || "Pending"}
               onChange={(e) =>
                 handleStatusChange(e.target.value)
               }
-              className="bg-black text-white border border-white/40 px-4 py-2 rounded outline-none cursor-pointer"
+              className="bg-black text-white border border-white/40 px-3 py-2 rounded w-full md:w-auto"
             >
-
-              {statuses.map((status) => (
-
-                <option
-                  key={status}
-                  value={status}
-                  className="bg-black text-white"
-                >
-                  {status}
-                </option>
-
+              {statuses.map((s) => (
+                <option key={s}>{s}</option>
               ))}
-
             </select>
-
           </div>
 
         </div>
-
-        {/* ORDER NOTES */}
-
-        <div className="border border-white/20 rounded-lg p-5">
-
-          <h2 className="font-semibold text-lg mb-4">
-            Order Notes
-          </h2>
-
-          <p className="text-gray-400">
-
-            {order.customer?.notes ||
-              order.notes ||
-              "No order notes."}
-
-          </p>
-
-        </div>
-
       </div>
-
-    </div>
+    </>
   );
 }
 

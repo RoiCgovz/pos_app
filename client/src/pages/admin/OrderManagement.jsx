@@ -13,14 +13,12 @@ const statuses = [
 
 function AdminOrderManagement({ setIsAdmin }) {
   const navigate = useNavigate();
-
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const savedOrders =
+    const saved =
       JSON.parse(localStorage.getItem("orders")) || [];
-
-    setOrders(savedOrders);
+    setOrders(saved);
   }, []);
 
   const handleLogout = () => {
@@ -30,260 +28,178 @@ function AdminOrderManagement({ setIsAdmin }) {
   };
 
   const handleStatusChange = (orderNumber, newStatus) => {
-    const updatedOrders = orders.map((order) =>
-      order.number === orderNumber
-        ? { ...order, status: newStatus }
-        : order
+    const updated = orders.map((o) =>
+      o.number === orderNumber
+        ? { ...o, status: newStatus }
+        : o
     );
 
-    setOrders(updatedOrders);
-
-    localStorage.setItem(
-      "orders",
-      JSON.stringify(updatedOrders)
-    );
-
+    setOrders(updated);
+    localStorage.setItem("orders", JSON.stringify(updated));
     toast.success("Order status updated");
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <>
+      {/* NAVBAR (IDENTICAL TO DASHBOARD) */}
+      <nav className="bg-white shadow-md">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-3">
 
-      {/* NAVBAR */}
-
-      <nav className="bg-white text-black">
-
-        <div className="flex items-center px-6 py-3">
-
-          <div className="flex-1">
-
-            <Link
-              to="/"
-              className="text-md font-bold text-black"
-            >
+          <div className="w-full md:flex-1 text-center md:text-left">
+            <Link to="/" className="font-bold text-gray-800">
               BuySphere
             </Link>
-
           </div>
 
-          <div className="flex flex-1 justify-center gap-15 text-md">
-
-            <Link
-              to="/admin/dashboard"
-              className="px-4 py-2 rounded-full hover:bg-black hover:text-white transition"
-            >
+          <div className="flex flex-wrap justify-center gap-2 text-xs md:text-sm">
+            <Link to="/admin/dashboard" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
               Dashboard
             </Link>
-
-            <Link
-              to="/admin/customerManage"
-              className="px-4 py-2 rounded-full hover:bg-black hover:text-white transition"
-            >
+            <Link to="/admin/customerManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
               Customers
             </Link>
-
-            <Link
-              to="/admin/categoryManage"
-              className="px-4 py-2 rounded-full hover:bg-black hover:text-white transition"
-            >
+            <Link to="/admin/categoryManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
               Categories
             </Link>
-
-            <Link
-              to="/admin/orderManage"
-              className="px-4 py-2 rounded-full hover:bg-black hover:text-white transition  "
-            >
+            <Link to="/admin/orderManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
               Orders
             </Link>
-
-            <Link
-              to="/admin/productManage"
-              className="px-4 py-2 rounded-full hover:bg-white hover:text-black transition"
-            >
+            <Link to="/admin/productManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
               Products
             </Link>
-
           </div>
 
-          <div className="flex-1 flex justify-end">
-
+          <div className="w-full md:flex-1 flex justify-center md:justify-end">
             <button
               onClick={handleLogout}
-              className="px-4 py-2 rounded-full border border-black hover:bg-white hover:text-black transition"
+              className="px-3 py-1 border rounded-full hover:bg-black hover:text-white transition"
             >
               Logout
             </button>
-
           </div>
 
         </div>
-
       </nav>
 
-      {/* CONTENT */}
+      {/* CONTENT (MATCHED STRUCTURE) */}
+      <div className="min-h-screen bg-black text-white px-4 py-8">
+        <div className="max-w-7xl mx-auto">
 
-      <div className="p-6 max-w-7xl mx-auto">
-
-        <h1 className="text-2xl font-bold mb-6">
-          Order Management
-        </h1>
-
-        {/* ORDER LIST */}
-
-        <div className="space-y-4">
+          <h1 className="text-lg md:text-xl font-bold mb-6">
+            Order Management
+          </h1>
 
           {!orders.length && (
-            <p className="py-10 text-center text-gray-400">
+            <p className="text-gray-400">
               No orders yet.
             </p>
           )}
 
-          {orders.map((order) => (
+          <div className="space-y-4">
+            {orders.map((order) => (
+              <div
+                key={order.number}
+                className="border border-white/20 p-4 rounded-lg text-sm"
+              >
 
-            <div
-              key={order.number}
-              className="border border-white/20 p-5 rounded-lg"
-            >
+                {/* HEADER (same as dashboard) */}
+                <div className="flex flex-col md:flex-row md:justify-between gap-2 mb-3">
 
-              {/* HEADER */}
+                  <div>
+                    <p className="font-bold text-sm md:text-base">
+                      {order.number}
+                    </p>
 
-              <div className="flex justify-between items-start mb-4">
-
-                <div>
-
-                  <p className="font-bold">
-                    {order.number}
-                  </p>
-
-                  <p className="text-sm text-gray-400">
-                    {order.date
-                      ? new Date(
-                          order.date
-                        ).toLocaleString()
-                      : "No date"}
-                  </p>
-
-                </div>
-
-                {/* STATUS */}
-
-                <select
-                  value={order.status || "Pending"}
-                  onChange={(e) =>
-                    handleStatusChange(
-                      order.number,
-                      e.target.value
-                    )
-                  }
-                  className="bg-black text-white border border-white/40 px-3 py-2 rounded outline-none cursor-pointer"
-                >
-
-                  {statuses.map((status) => (
-
-                    <option
-                      key={status}
-                      value={status}
-                      className="bg-black text-white"
-                    >
-                      {status}
-                    </option>
-
-                  ))}
-
-                </select>
-
-              </div>
-
-              {/* CUSTOMER */}
-
-              <div className="mb-4 text-sm text-gray-300">
-
-                <p>
-                  {order.customer?.name ||
-                    "Unknown Customer"}
-                </p>
-
-                <p>
-                  {order.customer?.email ||
-                    "No email"}
-                </p>
-
-              </div>
-
-              {/* ITEMS */}
-
-              <div className="border-t border-white/20 pt-3 space-y-2">
-
-                {order.items?.map((item) => (
-
-                  <div
-                    key={item.id}
-                    className="flex justify-between text-sm"
-                  >
-
-                    <span>
-                      {item.name} x{item.quantity}
-                    </span>
-
-                    <span>
-                      $
-                      {(
-                        Number(item.price) *
-                        Number(item.quantity)
-                      ).toFixed(2)}
-                    </span>
-
+                    <p className="text-xs text-gray-400">
+                      {order.date
+                        ? new Date(order.date).toLocaleString()
+                        : "No date"}
+                    </p>
                   </div>
 
-                ))}
-
-              </div>
-
-              {/* TOTAL + ACTION */}
-
-              <div className="border-t border-white/20 mt-4 pt-4 flex justify-between items-center">
-
-                <div>
-
-                  <span className="text-gray-400 text-sm">
-                    Total
-                  </span>
-
-                  <p className="font-semibold">
-                    $
-                    {Number(
-                      order.total || 0
-                    ).toFixed(2)}
-                  </p>
+                  {/* STATUS SELECT (adapted but styled same scale) */}
+                  <select
+                    value={order.status || "Pending"}
+                    onChange={(e) =>
+                      handleStatusChange(
+                        order.number,
+                        e.target.value
+                      )
+                    }
+                    className="text-xs md:text-sm border px-2 py-1 rounded bg-black text-white border-white/40"
+                  >
+                    {statuses.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
 
                 </div>
 
-                <button
-                  onClick={() =>
-                    navigate(
-                      `/admin/orderDetails/${encodeURIComponent(
-                        order.number
-                      )}`
-                    )
-                  }
-                  className="border border-white px-4 py-2 rounded hover:bg-white hover:text-black transition"
-                >
-                  View Details
-                </button>
+                {/* CUSTOMER */}
+                <div className="mb-3 text-gray-300 text-xs md:text-sm">
+                  <p>{order.customer?.name}</p>
+                  <p className="break-all">
+                    {order.customer?.email}
+                  </p>
+                </div>
+
+                {/* ITEMS */}
+                <div className="border-t border-white/20 pt-3 space-y-1">
+                  {order.items?.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex justify-between text-xs md:text-sm"
+                    >
+                      <span>
+                        {item.name} x{item.quantity}
+                      </span>
+
+                      <span>
+                        $
+                        {(
+                          Number(item.price) *
+                          Number(item.quantity)
+                        ).toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* TOTAL + ACTION */}
+                <div className="border-t border-white/20 mt-3 pt-2 flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+
+                  <div className="font-semibold text-sm">
+                    <span>Total: </span>
+                    <span>
+                      ${Number(order.total || 0).toFixed(2)}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() =>
+                      navigate(
+                        `/admin/orderDetails/${encodeURIComponent(
+                          order.number
+                        )}`
+                      )
+                    }
+                    className="text-xs md:text-sm border px-3 py-1 rounded hover:bg-white hover:text-black transition"
+                  >
+                    View Details
+                  </button>
+
+                </div>
 
               </div>
-
-            </div>
-
-          ))}
+            ))}
+          </div>
 
         </div>
-
       </div>
-
-    </div>
+    </>
   );
 }
 
 export default AdminOrderManagement;
- 
