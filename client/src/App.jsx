@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import sampleProducts from "./data/sampleProducts";
+import sampleCategories from "./data/sampleCategories";
 
 import Home from "./pages/customer/Home";
 import Products from "./pages/customer/Products";
