@@ -19,24 +19,34 @@ function AdminCustomerManagement({ setIsAdmin }) {
   }, []);
 
   const loadCustomers = () => {
-    const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    let savedOrders = [];
+
+    try {
+      savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    } catch {
+      savedOrders = [];
+    }
 
     const customerMap = {};
 
     savedOrders.forEach(order => {
-      const customer = order.customer;
-      if (!customer?.email) return;
+      const raw = order.customer || order;
 
-      const email = customer.email;
+      const email = raw.email || raw.Email;
+      if (!email) return;
+
+      const name = raw.name || raw.Name || "Unknown";
+      const contact = raw.contact || raw.Contact || "N/A";
+      const status = raw.status || "Active";
 
       if (!customerMap[email]) {
         customerMap[email] = {
-          name: customer.name || "Unknown",
+          name,
           email,
-          contact: customer.contact || "N/A",
+          contact,
           orders: 0,
           totalPurchase: 0,
-          status: customer.status || "Active"
+          status
         };
       }
 
@@ -54,18 +64,30 @@ function AdminCustomerManagement({ setIsAdmin }) {
   };
 
   const handleStatusChange = (email, newStatus) => {
-    const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    let savedOrders = [];
+
+    try {
+      savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    } catch {
+      savedOrders = [];
+    }
 
     const updatedOrders = savedOrders.map(order => {
-      if (order.customer?.email === email) {
+      const raw = order.customer || {};
+      const orderEmail = raw.email || raw.Email;
+
+      if (orderEmail === email) {
         return {
           ...order,
           customer: {
-            ...order.customer,
+            ...raw,
+            email: email,
+            Email: email,
             status: newStatus
           }
         };
       }
+
       return order;
     });
 
@@ -77,37 +99,31 @@ function AdminCustomerManagement({ setIsAdmin }) {
 
   return (
     <>
-      {/* NAVBAR */}
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-3">
+      <nav className="bg-white p-4 flex flex-col md:flex-row items-center justify-between">
+        <div className="w-full md:flex-1 text-center md:text-left">
+          <Link to="/" className="font-bold text-gray-800">
+            BuySphere
+          </Link>
+        </div>
 
-          <div className="w-full md:flex-1 text-center md:text-left">
-            <Link to="/" className="font-bold text-gray-800">
-              BuySphere
-            </Link>
-          </div>
+        <div className="flex flex-wrap justify-center gap-2 text-xs md:text-sm">
+          <Link to="/admin/dashboard" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Dashboard</Link>
+          <Link to="/admin/customerManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Customers</Link>
+          <Link to="/admin/categoryManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Categories</Link>
+          <Link to="/admin/orderManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Orders</Link>
+          <Link to="/admin/productManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Products</Link>
+        </div>
 
-          <div className="flex flex-wrap justify-center gap-2 text-xs md:text-sm">
-            <Link to="/admin/dashboard" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Dashboard</Link>
-            <Link to="/admin/customerManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Customers</Link>
-            <Link to="/admin/categoryManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Categories</Link>
-            <Link to="/admin/orderManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Orders</Link>
-            <Link to="/admin/productManage" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">Products</Link>
-          </div>
-
-          <div className="w-full md:flex-1 flex justify-center md:justify-end">
-            <button
-              onClick={handleLogout}
-              className="px-3 py-1 border rounded-full hover:bg-black hover:text-white transition"
-            >
-              Logout
-            </button>
-          </div>
-
+        <div className="w-full md:flex-1 flex justify-center md:justify-end">
+          <button
+            onClick={handleLogout}
+            className="px-3 py-1 border rounded-full hover:bg-black hover:text-white transition"
+          >
+            Logout
+          </button>
         </div>
       </nav>
 
-      {/* CONTENT */}
       <div className="min-h-screen bg-black text-white px-4 py-8">
         <div className="max-w-7xl mx-auto">
 
@@ -127,10 +143,7 @@ function AdminCustomerManagement({ setIsAdmin }) {
                 key={customer.email}
                 className="border border-white/20 p-4 md:p-5 rounded-lg text-sm"
               >
-
-                {/* INFO GRID */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
                   <div>
                     <p className="text-gray-400 text-xs">Name</p>
                     <p className="font-semibold mt-1">
@@ -158,12 +171,9 @@ function AdminCustomerManagement({ setIsAdmin }) {
                       {customer.orders}
                     </p>
                   </div>
-
                 </div>
 
-                {/* FOOTER */}
                 <div className="border-t border-white/20 mt-4 pt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-
                   <div>
                     <p className="text-gray-400 text-xs">
                       Total Purchase
@@ -193,7 +203,6 @@ function AdminCustomerManagement({ setIsAdmin }) {
                       <option className="bg-black">Suspended</option>
                     </select>
                   </div>
-
                 </div>
 
               </div>
