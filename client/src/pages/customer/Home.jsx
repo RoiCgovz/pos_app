@@ -39,7 +39,11 @@ import { useState, useEffect } from "react";
               </Link>
             </div>
 
-            <div className="flex-1" />
+            <div className="flex-1 flex justify-end">
+              <Link to="/admin/login" className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500">
+                Admin
+              </Link>
+            </div>
           </div>
         </nav>
 
