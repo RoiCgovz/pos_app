@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  getProducts,
-  updateProduct
-} from "../../utils/productStorage";
+import { getProducts, updateProduct } from "../../utils/productStorage";
 
 function Checkout({ cart, setCart }) {
   const [form, setForm] = useState({
@@ -16,12 +13,7 @@ function Checkout({ cart, setCart }) {
   });
 
   const [order, setOrder] = useState(null);
-
-  const subtotal = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-
+  const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   const shipping = subtotal * 0.02;
   const total = subtotal + shipping;
 
@@ -34,15 +26,9 @@ function Checkout({ cart, setCart }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    // Get the latest products from localStorage
     const products = getProducts();
-
-    // Check that all cart items still have enough stock
     const insufficientStock = cart.find(item => {
-      const product = products.find(
-        product => product.id === item.id
-      );
+      const product = products.find( product => product.id === item.id );
 
       return !product || product.stock < item.quantity;
     });
@@ -54,12 +40,8 @@ function Checkout({ cart, setCart }) {
       return;
     }
 
-    // Reduce product stock
     cart.forEach(item => {
-      const product = products.find(
-        product => product.id === item.id
-      );
-
+      const product = products.find( product => product.id === item.id);
       if (product) {
         updateProduct(product.id, {
           stock: product.stock - item.quantity

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import bgImage from "../../assets/bg-1.jpg"; // same background as login
+import bgImage from "../../assets/bg-1.jpg";
 
 function AdminRegister({ setIsAdmin }) {
   const [name, setName] = useState("");
@@ -23,7 +23,36 @@ function AdminRegister({ setIsAdmin }) {
       toast.error("Passwords do not match");
       return;
     }
+
+    // Get existing admins
+    const savedAdmins = localStorage.getItem("admins");
+    const admins = savedAdmins ? JSON.parse(savedAdmins) : [];
+
+    // Check if email already exists
+    const exists = admins.find(a => a.email === email);
+
+    if (exists) {
+      toast.error("Email already registered");
+      return;
+    }
+
+    // Create new admin
+    const newAdmin = {
+      id: Date.now(),
+      name,
+      email,
+      password
+    };
+
+    // Save to localStorage
+    const updatedAdmins = [...admins, newAdmin];
+    localStorage.setItem("admins", JSON.stringify(updatedAdmins));
+
+    // Save logged-in session
+    localStorage.setItem("admin", JSON.stringify(newAdmin));
+
     toast.success("Registered successfully");
+
     setIsAdmin(true);
     navigate("/admin/dashboard");
   };
@@ -89,7 +118,6 @@ function AdminRegister({ setIsAdmin }) {
 
         </form>
 
-        {/* Link to login */}
         <p className="text-xs text-gray-300 mt-6 text-center">
           Already have an account?{" "}
           <span

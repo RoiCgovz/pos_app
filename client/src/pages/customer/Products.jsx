@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import sampleProducts from "../../data/sampleProducts";
 
 function Products({ setCart }) {
   const [products, setProducts] = useState([]);
@@ -10,7 +11,7 @@ function Products({ setCart }) {
   );
 
   const [category, setCategory] = useState(
-    () => localStorage.getItem("category") || "All"
+    () => localStorage.getItem("selectedCategory") || "All"
   );
 
   const [sort, setSort] = useState(
@@ -30,10 +31,16 @@ function Products({ setCart }) {
         if (saved) {
           setProducts(JSON.parse(saved));
         } else {
-          setProducts([]);
+          localStorage.setItem(
+            "products",
+            JSON.stringify(sampleProducts)
+          );
+
+          setProducts(sampleProducts);
         }
-      } catch {
-        setProducts([]);
+      } catch (error) {
+        console.error("Error loading products:", error);
+        setProducts(sampleProducts);
       }
     };
 
@@ -48,10 +55,10 @@ function Products({ setCart }) {
     };
   }, []);
 
-  // Save search/filter settings
+ 
   useEffect(() => {
     localStorage.setItem("search", search);
-    localStorage.setItem("category", category);
+    localStorage.setItem("selectedCategory", category);
     localStorage.setItem("sort", sort);
     localStorage.setItem("brand", brand);
   }, [search, category, sort, brand]);
