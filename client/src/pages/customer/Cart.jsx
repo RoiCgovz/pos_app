@@ -6,54 +6,81 @@ function Cart({ cart, setCart }) {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  const increase = id => { setCart(cart.map(item => item.id === id && item.quantity < item.stock ? { ...item, quantity: item.quantity + 1 } : item ));
+  const increase = id => {
+    setCart(
+      cart.map(item =>
+        item.id === id && item.quantity < item.stock
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
   };
+
   const decrease = id => {
-    setCart(cart.map(item => item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item ));
+    setCart(
+      cart.map(item =>
+        item.id === id && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+    );
   };
 
-  const remove = id => { setCart(cart.filter(item => item.id !== id)); };
+  const remove = id => {
+    setCart(cart.filter(item => item.id !== id));
+  };
 
-  const subtotal = cart.reduce( (total, item) => total + item.price * item.quantity, 0);
+  const subtotal = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   const shipping = subtotal * 0.02;
   const total = subtotal + shipping;
 
   return (
-    <div class="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-black text-white">
+
+      {/* Navbar */}
       <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center">
-          <div className="flex-1">
-            <Link to="/" className="text-md font-semibold text-gray-800">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex flex-col md:flex-row items-center">
+
+          {/* Left */}
+          <div className="w-full md:flex-1 text-center md:text-left">
+            <Link to="/" className="text-md font-bold text-gray-800">
               BuySphere
             </Link>
           </div>
-          <div className="flex flex-1 justify-center gap-15 text-md">
-            <Link to="/" className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500">
+
+          {/* Center */}
+          <div className="flex gap-4 text-sm md:text-md justify-center">
+            <Link to="/" className="px-3 py-1 rounded-full text-black hover:bg-black hover:text-white transition">
               Home
             </Link>
 
-            <Link
-              to="/products"
-              className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500"
-            >
+            <Link to="/products" className="px-3 py-1 rounded-full text-black hover:bg-black hover:text-white transition">
               Products
             </Link>
-
-            <Link
-              to="/cart"
-              className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500"
-            >
+ 
+            <Link to="/cart" className="px-3 py-1 rounded-full text-black hover:bg-black hover:text-white transition">
               Cart
             </Link>
           </div>
 
-          <div className="flex-1" />
+          {/* Right */}
+          <div className="w-full md:flex-1 flex justify-center md:justify-end">
+            <Link to="/admin/login" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
+              Admin
+            </Link>
+          </div>
+
         </div>
       </nav>
 
-      <main className="min-h-screen bg-black text-white">
+      {/* Main */}
+      <main>
         <div className="max-w-7xl mx-auto px-6 py-14">
+
           <p className="text-xs tracking-[2px] uppercase text-gray-400">
             Your Selection
           </p>
@@ -81,6 +108,8 @@ function Cart({ cart, setCart }) {
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+              {/* Cart Items */}
               <div className="lg:col-span-2 border border-white/20">
                 {cart.map(item => (
                   <div
@@ -151,6 +180,7 @@ function Cart({ cart, setCart }) {
                 ))}
               </div>
 
+              {/* Summary */}
               <aside className="h-fit border border-white/20 p-7">
                 <p className="text-xs tracking-[4px] uppercase text-gray-400">
                   Summary
@@ -161,30 +191,17 @@ function Cart({ cart, setCart }) {
                 </h2>
 
                 <div className="flex justify-between text-sm mb-4">
-                  <span className="text-gray-400">
-                    Subtotal
-                  </span>
-
-                  <span>
-                    ${subtotal.toFixed(2)}
-                  </span>
+                  <span className="text-gray-400">Subtotal</span>
+                  <span>${subtotal.toFixed(2)}</span>
                 </div>
 
                 <div className="flex justify-between text-sm mb-6">
-                  <span className="text-gray-400">
-                    Shipping
-                  </span>
-
-                  <span>
-                    ${shipping.toFixed(2)}
-                  </span>
+                  <span className="text-gray-400">Shipping</span>
+                  <span>${shipping.toFixed(2)}</span>
                 </div>
 
                 <div className="border-t border-white/20 pt-5 flex justify-between">
-                  <span className="font-bold">
-                    Total
-                  </span>
-
+                  <span className="font-bold">Total</span>
                   <span className="text-2xl font-bold">
                     ${total.toFixed(2)}
                   </span>
@@ -197,6 +214,7 @@ function Cart({ cart, setCart }) {
                   Proceed to Checkout
                 </Link>
               </aside>
+
             </div>
           )}
         </div>

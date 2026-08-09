@@ -76,34 +76,38 @@ function Products({ setCart }) {
   return (
     <div class="max-w-7xl mx-auto">
       {/* Navbar */}
-      <nav className="bg-white shadow-md max-w">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-3">
-          <div className="w-full md:flex-1 text-center md:text-left">
-            <Link to="/" className="text-md font-bold text-gray-800">
+      <nav className="bg-white shadow-md">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center">
+
+          {/* Left (Logo) */}
+          <div className="flex-1">
+            <Link to="/" className="text-lg font-bold text-gray-800">
               BuySphere
             </Link>
           </div>
 
-          <div className="w-full flex justify-center">
+          {/* Center (Links) */}
+          <div className="flex-1 flex justify-center">
             <div className="flex gap-4 text-sm">
-              <Link to="/" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">
+              <Link to="/" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
                 Home
               </Link>
-              <Link to="/products" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">
+              <Link to="/products" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
                 Products
               </Link>
-              <Link to="/cart" className="px-3 py-1 rounded-full hover:bg-black hover:text-white">
+              <Link to="/cart" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
                 Cart
               </Link>
             </div>
           </div>
+
+          {/* Right (Empty or future button) */}
+          <div className="flex-1" />
+
         </div>
       </nav>
 
-      {/* Page */}
       <div className="min-h-screen bg-black text-white">
-
-        {/* Search */}
         <div className="p-4 border-b border-white/20">
           <input
             type="text"
@@ -114,12 +118,8 @@ function Products({ setCart }) {
           />
         </div>
 
-        {/* Filters (mobile top, desktop sidebar) */}
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4">
-
-          {/* Filters */}
           <aside className="p-4 md:border-r border-white/20 flex flex-col gap-4 md:gap-6">
-
             <div>
               <h2 className="text-xs text-gray-400 mb-2">SORT</h2>
               <select
@@ -157,7 +157,6 @@ function Products({ setCart }) {
 
           </aside>
 
-          {/* Products */}
           <main className="col-span-3 p-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredProducts.map(product => (
@@ -181,7 +180,6 @@ function Products({ setCart }) {
   );
 }
 
-/* Product Card */
 function ProductCard({ product, setCart }) {
   const inStock = product.stock > 0;
 

@@ -29,7 +29,7 @@ function Home() {
             </Link>
           </div>
 
-          <div className="flex gap-4 text-sm md:text-md">
+          <div className="flex gap-4 text-sm md:text-md justify-center">
             <Link to="/" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
               Home
             </Link>
