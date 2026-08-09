@@ -91,7 +91,7 @@ function Products({ setCart }) {
             <Link to="/" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
               Home
             </Link>
-            <Link to="/products" className="px-3 py-1 rounded-full bg-black text-white">
+            <Link to="/products" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
               Products
             </Link>
             <Link to="/cart" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
