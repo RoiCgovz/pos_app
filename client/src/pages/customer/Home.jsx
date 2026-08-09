@@ -3,256 +3,190 @@ import categories from "../../data/categories";
 import featuredProducts from "../../data/featuredProducts";
 import { useState, useEffect } from "react";
 
-  function Home() {
-    const [index, setIndex] = useState(() => {
-      const saved = localStorage.getItem("categoryIndex");
-      return saved ? JSON.parse(saved) : 0;
-    });
-    
-    const next = () => { setIndex((prev) => (prev + 1) % categories.length); };
-    const prev = () => { setIndex((prev) => prev === 0 ? categories.length - 1 : prev - 1);};
-    
-    useEffect(() => {
-      localStorage.setItem("categoryIndex", JSON.stringify(index));
-    }, [index]);
+function Home() {
+  const [index, setIndex] = useState(() => {
+    const saved = localStorage.getItem("categoryIndex");
+    return saved ? JSON.parse(saved) : 0;
+  });
 
-    return (
-      <>
-        {/* Navbar */}
-        <nav className="bg-white shadow-md">
-          <div className="max-w-7xl mx-auto px-6 py-3 flex items-center">
-            <div className="flex-1">
-              <Link to="/" className="text-md font-bold text-gray-800">
-                BuySphere
-              </Link>
-            </div>
+  const next = () => setIndex((prev) => (prev + 1) % categories.length);
+  const prev = () =>
+    setIndex((prev) => (prev === 0 ? categories.length - 1 : prev - 1));
 
-            <div className="flex flex-1 justify-center gap-15 text-md">
-              <Link to="/" className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500">
-                Home
-              </Link>
-              <Link to="/products" className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500">
-                Products
-              </Link>
-              <Link to="/cart" className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500">
-                Cart
-              </Link>
-            </div>
+  useEffect(() => {
+    localStorage.setItem("categoryIndex", JSON.stringify(index));
+  }, [index]);
 
-            <div className="flex-1 flex justify-end">
-              <Link to="/admin/login" className="px-4 py-2 rounded-full text-black hover:text-white hover:bg-black transition duration-500">
-                Admin
-              </Link>
-            </div>
-          </div>
-        </nav>
-
-        {/* Promotional Product */}
-        <section className="relative h-[550px] overflow-hidden text-white">
-          <img src="https://images.unsplash.com/photo-1562105962-2fbaaf107fe3?q=80&w=2048&auto=format&fit=crop" alt="Featured shoe" className="absolute inset-0 w-full h-full object-cover opacity-60"/>
-
-          <div className="absolute inset-0 bg-black/70" />
-
-          <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
-            <p className="text-sm tracking-[5px] uppercase text-gray-300 mb-4">
-              BuySphere Collection
-            </p>
-
-            <h2 className="text-5xl md:text-6xl font-bold mb-5">
-              Big Sale Up To 50% Off
-            </h2>
-
-            <p className="text-lg text-gray-300 mb-8 max-w-xl">
-              Discover the latest products at the best prices.
-            </p>
-
-            <Link
-              to="/products"
-              className="bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-black hover:text-white border border-white transition duration-300"
-            >
-              Shop Now
+  return (
+    <>
+      {/* Navbar */}
+      <nav className="bg-white shadow-md">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-3 md:gap-0">
+          
+          <div className="w-full md:flex-1 text-center md:text-left">
+            <Link to="/" className="text-lg font-bold text-gray-800">
+              BuySphere
             </Link>
           </div>
-        </section>
 
-        <div className="h-2 bg-black/80" />
-
-        {/* Categories */}
-        <section className="relative max-w-7xl h-[550px] mx-auto px-6 py-12 bg-black text-white overflow-hidden">
-          <div className="flex items-center justify-between px-10">
-            <div>
-              <p className="text-xs tracking-[4px] uppercase text-gray-400">
-                Explore
-              </p>
-              <h2 className="text-4xl font-bold mt-2">
-                Products
-              </h2>
-            </div>
-
-            <div className="text-sm text-gray-400">
-              {index + 1} / {categories.length}
-            </div>
+          <div className="flex gap-4 text-sm md:text-md">
+            <Link to="/" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
+              Home
+            </Link>
+            <Link to="/products" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
+              Products
+            </Link>
+            <Link to="/cart" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
+              Cart
+            </Link>
           </div>
 
-          {/* Previous */}
+          <div className="w-full md:flex-1 flex justify-center md:justify-end">
+            <Link to="/admin/login" className="px-3 py-1 rounded-full hover:bg-black hover:text-white transition">
+              Admin
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="relative h-[400px] md:h-[550px] text-white">
+        <img
+          src="https://images.unsplash.com/photo-1562105962-2fbaaf107fe3?q=80&w=2048&auto=format&fit=crop"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 bg-black/70" />
+
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+          <p className="text-xs tracking-[3px] text-gray-300 mb-3">
+            BuySphere Collection
+          </p>
+
+          <h2 className="text-3xl md:text-6xl font-bold mb-4">
+            Big Sale Up To 50% Off
+          </h2>
+
+          <p className="text-sm md:text-lg text-gray-300 mb-6 max-w-md">
+            Discover the latest products at the best prices.
+          </p>
+
+          <Link
+            to="/products"
+            className="bg-white text-black px-6 py-2 md:px-8 md:py-3 rounded-full font-semibold hover:bg-black hover:text-white border transition"
+          >
+            Shop Now
+          </Link>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="bg-black text-white py-10 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto relative">
+
+          <div className="flex justify-between mb-6">
+            <h2 className="text-2xl md:text-4xl font-bold">
+              Products
+            </h2>
+            <span className="text-gray-400 text-sm">
+              {index + 1}/{categories.length}
+            </span>
+          </div>
+
+          {/* Arrows */}
           <button
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-24 grid place-items-center text-white hover:bg-white/10 rounded-full transition"
+            className="absolute left-0 md:left-[-40px] top-1/2 -translate-y-1/2 p-2"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-8 h-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
+           <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} > 
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /> 
             </svg>
           </button>
 
-          {/* Next */}
           <button
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-24 grid place-items-center text-white hover:bg-white/10 rounded-full transition"
+            className="absolute right-0 md:right-[-40px] top-1/2 -translate-y-1/2 p-2"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-8 h-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+           <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} > <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /> </svg>
           </button>
 
           {/* Content */}
-          <div className="h-[400px] flex flex-col md:flex-row items-center gap-12 px-16">
+          <div className="flex flex-col md:flex-row items-center gap-8">
             
-            {/* Text */}
-            <div className="flex-1">
-              <p className="text-sm text-gray-400 uppercase tracking-widest mb-3">
-                Collection
-              </p>
-
-              <h3 className="text-6xl md:text-7xl font-bold mb-5">
+            <div className="text-center md:text-left flex-1">
+              <h3 className="text-3xl md:text-6xl font-bold mb-4">
                 {categories[index].name}
               </h3>
 
-              <p className="text-gray-400 text-lg max-w-md">
-                Explore our {categories[index].name} collection and discover
-                products made for your style.
+              <p className="text-gray-400 text-sm md:text-lg">
+                Explore our {categories[index].name} collection.
               </p>
 
               <Link
                 to="/products"
-                className="inline-block mt-7 border border-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition"
+                className="inline-block mt-5 border px-5 py-2 rounded-full text-sm hover:bg-white hover:text-black transition"
               >
-                Explore Collection
+                Explore
               </Link>
             </div>
 
-            {/* Image */}
-            <div className="flex-1 flex justify-center">
+            <div className="flex justify-center flex-1">
               <img
                 src={categories[index].image}
-                alt={categories[index].name}
-                className="w-[360px] h-[360px] object-cover rounded-2xl shadow-2xl hover:scale-105 transition duration-500"
+                className="w-[220px] h-[220px] md:w-[360px] md:h-[360px] object-cover rounded-xl"
               />
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <div className="h-2 bg-black/80" />
+      {/* Featured */}
+      <section className="bg-black px-4 py-10">
+        <div className="max-w-7xl mx-auto">
 
-        {/* Featured Products */}
-        <section className="max-w-7xl mx-auto px-6 py-14 bg-black">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <p className="text-xs tracking-[4px] uppercase text-gray-400">
-                Our Picks
-              </p>
+          <h2 className="text-white text-2xl md:text-4xl font-bold mb-6">
+            Featured Products
+          </h2>
 
-              <h2 className="text-4xl text-white font-bold mt-2">
-                Featured Products
-              </h2>
-            </div>
-
-            <Link
-              to="/products"
-              className="hidden md:block text-sm text-gray-400 hover:text-white transition"
-            >
-              View All →
-            </Link>
-          </div>
-
-          <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-4">
+          <div className="flex gap-4 overflow-x-auto pb-3 no-scrollbar">
             {featuredProducts.map((product) => (
               <div
                 key={product.id}
-                className="min-w-[280px] md:min-w-[300px] bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden snap-start"
+                className="min-w-[240px] md:min-w-[300px] bg-white rounded-xl"
               >
-                <div className="h-52 bg-gray-100 overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="h-full w-full object-cover hover:scale-105 transition duration-500"
-                  />
-                </div>
+                <img
+                  src={product.image}
+                  className="h-40 md:h-52 w-full object-cover"
+                />
 
-                <div className="p-5">
-                  <h3 className="text-lg font-bold mb-2">
+                <div className="p-4">
+                  <h3 className="font-bold text-sm md:text-lg">
                     {product.name}
                   </h3>
 
-                  <p className="text-black/60 text-sm font-semibold mb-5">
-                    ${product.price}
-                  </p>
+                  <p className="text-sm mb-3">${product.price}</p>
 
                   <Link
-                    to={`/product`}
-                    className="block w-full text-center border border-black px-4 py-2 rounded-lg bg-black text-white font-semibold hover:bg-white hover:text-black transition duration-300"
+                    to="/product"
+                    className="block text-center bg-black text-white py-2 rounded"
                   >
-                    View Product
+                    View
                   </Link>
                 </div>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <div className="h-2 bg-black/80" />
+      {/* Footer */}
+      <footer className="bg-black text-white text-center py-8 text-sm">
+        <h2 className="font-bold mb-2">BuySphere</h2>
+        <p className="text-gray-400">support@buysphere.com</p>
+        <p className="text-gray-400">facebook.com/BuySphere</p>
+        <p className="text-gray-400">0918972980</p>
+      </footer>
+    </>
+  );
+}
 
-        {/* Footer */}
-        <footer className="bg-black text-white py-10 text-center">
-          <h2 className="text-xl font-bold mb-3">
-            BuySphere
-          </h2>
-
-          <p className="text-gray-400 text-sm mb-1">
-            support@buysphere.com
-          </p>
-
-          <p className="text-gray-400 text-sm mb-1">
-            facebook.com/BuySphere
-          </p>
-
-          <p className="text-gray-400 text-sm">
-            0918972980
-          </p>
-        </footer>
-      </>
-    );
-  }
-
-  export default Home;
+export default Home;
