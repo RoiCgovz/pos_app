@@ -20,7 +20,7 @@ function Cart({ cart, setCart }) {
   const total = subtotal + shipping;
 
   return (
-    <>
+    <div class="max-w-7xl mx-auto">
       <nav className="bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center">
           <div className="flex-1">
@@ -54,27 +54,27 @@ function Cart({ cart, setCart }) {
 
       <main className="min-h-screen bg-black text-white">
         <div className="max-w-7xl mx-auto px-6 py-14">
-          <p className="text-xs tracking-[4px] uppercase text-gray-400">
+          <p className="text-xs tracking-[2px] uppercase text-gray-400">
             Your Selection
           </p>
 
-          <h1 className="text-5xl font-bold mt-2 mb-10">
+          <h1 className="text-2xl font-bold mt-2 mb-10">
             Shopping Cart
           </h1>
 
           {cart.length === 0 ? (
             <div className="border border-white/20 py-24 text-center">
-              <h2 className="text-2xl font-bold mb-3">
+              <h2 className="text-xl font-bold mb-3">
                 Your cart is empty
               </h2>
 
-              <p className="text-gray-400 mb-7">
+              <p className="text-gray-400 mb-7 text-md">
                 Add some products to get started.
               </p>
 
               <Link
                 to="/products"
-                className="bg-white text-black px-7 py-3 rounded-full font-semibold hover:bg-black hover:text-white border border-white transition"
+                className="bg-white text-black px-4 py-2 rounded-full font-semibold hover:bg-black hover:text-white border border-white transition"
               >
                 Browse Products
               </Link>
@@ -201,7 +201,7 @@ function Cart({ cart, setCart }) {
           )}
         </div>
       </main>
-    </>
+    </div>
   );
 }
 

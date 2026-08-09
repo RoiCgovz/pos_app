@@ -79,7 +79,7 @@ function Products({ setCart }) {
       <nav className="bg-white shadow-md max-w">
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-3">
           <div className="w-full md:flex-1 text-center md:text-left">
-            <Link to="/" className="text-lg font-bold text-gray-800">
+            <Link to="/" className="text-md font-bold text-gray-800">
               BuySphere
             </Link>
           </div>

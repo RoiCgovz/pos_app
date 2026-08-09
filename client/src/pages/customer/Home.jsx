@@ -18,13 +18,13 @@ function Home() {
   }, [index]);
 
   return (
-    <>
+    <div class="max-w-7xl mx-auto">
       {/* Navbar */}
       <nav className="bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center gap-3 md:gap-0">
           
           <div className="w-full md:flex-1 text-center md:text-left">
-            <Link to="/" className="text-lg font-bold text-gray-800">
+            <Link to="/" className="text-md font-bold text-gray-800">
               BuySphere
             </Link>
           </div>
@@ -185,7 +185,7 @@ function Home() {
         <p className="text-gray-400">facebook.com/BuySphere</p>
         <p className="text-gray-400">0918972980</p>
       </footer>
-    </>
+    </div>
   );
 }
 
